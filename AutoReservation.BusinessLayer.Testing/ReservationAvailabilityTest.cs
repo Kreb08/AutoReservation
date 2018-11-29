@@ -1,4 +1,6 @@
 ﻿using System;
+using AutoReservation.Dal;
+using AutoReservation.Dal.Entities;
 using AutoReservation.TestEnvironment;
 using Xunit;
 
@@ -22,55 +24,108 @@ namespace AutoReservation.BusinessLayer.Testing
         [Fact]
         public void ScenarioOkay01Test()
         {
-            throw new NotImplementedException("Test not implemented.");
+            Reservation reservation = new Reservation {
+                AutoId = 1,
+                Von = DateTime.Today.AddDays(3),
+                Bis = DateTime.Today.AddDays(5)
+            };
+            using(AutoReservationContext context = new AutoReservationContext()) {
+                Assert.True(Target.AvailibilityCheck(context, reservation));
+            }
         }
 
         [Fact]
         public void ScenarioOkay02Test()
         {
-            throw new NotImplementedException("Test not implemented.");
+            Reservation reservation = new Reservation {
+                AutoId = 1,
+                Von = DateTime.Today.AddDays(-5),
+                Bis = DateTime.Today.AddDays(-3)
+            };
+            using (AutoReservationContext context = new AutoReservationContext()) {
+                Assert.True(Target.AvailibilityCheck(context, reservation));
+            }
         }
 
         [Fact]
         public void ScenarioOkay03Test()
         {
-            throw new NotImplementedException("Test not implemented.");
+            Reservation reservation = new Reservation {
+                AutoId = 2,
+                Von = DateTime.Today,
+                Bis = DateTime.Today.AddDays(1)
+            };
+            using (AutoReservationContext context = new AutoReservationContext()) {
+                Assert.True(Target.AvailibilityCheck(context, reservation));
+            }
         }
 
+        /*
         [Fact]
         public void ScenarioOkay04Test()
         {
             throw new NotImplementedException("Test not implemented.");
         }
+        */
 
         [Fact]
         public void ScenarioNotOkay01Test()
         {
-            throw new NotImplementedException("Test not implemented.");
+            Reservation reservation = new Reservation {
+                AutoId = 1,
+                Von = DateTime.Today.AddDays(-1),
+                Bis = DateTime.Today.AddHours(12)
+            };
+            using (AutoReservationContext context = new AutoReservationContext()) {
+                Assert.False(Target.AvailibilityCheck(context, reservation));
+            }
         }
 
         [Fact]
         public void ScenarioNotOkay02Test()
         {
-            throw new NotImplementedException("Test not implemented.");
+            Reservation reservation = new Reservation {
+                AutoId = 1,
+                Von = DateTime.Today,
+                Bis = DateTime.Today.AddDays(1)
+            };
+            using (AutoReservationContext context = new AutoReservationContext()) {
+                Assert.False(Target.AvailibilityCheck(context, reservation));
+            }
         }
 
         [Fact]
         public void ScenarioNotOkay03Test()
         {
-            throw new NotImplementedException("Test not implemented.");
+            Reservation reservation = new Reservation {
+                AutoId = 1,
+                Von = DateTime.Today.AddHours(1),
+                Bis = DateTime.Today.AddHours(12)
+            };
+            using (AutoReservationContext context = new AutoReservationContext()) {
+                Assert.False(Target.AvailibilityCheck(context, reservation));
+            }
         }
 
         [Fact]
         public void ScenarioNotOkay04Test()
         {
-            throw new NotImplementedException("Test not implemented.");
+            Reservation reservation = new Reservation {
+                AutoId = 1,
+                Von = DateTime.Today.AddHours(12),
+                Bis = DateTime.Today.AddDays(2)
+            };
+            using (AutoReservationContext context = new AutoReservationContext()) {
+                Assert.False(Target.AvailibilityCheck(context, reservation));
+            }
         }
 
+        /*
         [Fact]
         public void ScenarioNotOkay05Test()
         {
             throw new NotImplementedException("Test not implemented.");
         }
+        */
     }
 }
