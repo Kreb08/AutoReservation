@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoReservation.GUI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GUI {
+namespace AutoReservation.GUI {
     /// <summary>
     /// Interaktionslogik für AutoHinzufügen.xaml
     /// </summary>
     public partial class AutoHinzufügen : Window {
         public AutoHinzufügen() {
             InitializeComponent();
+
+            DataContext = new AutoViewModel();
         }
 
         private void ButtonCancle(object sender, RoutedEventArgs e) {
