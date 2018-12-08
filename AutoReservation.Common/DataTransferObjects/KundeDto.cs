@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace AutoReservation.Common.DataTransferObjects
 {
+    [DataContract]
     public class KundeDto : BasisDto
     {
         private int _id;
+        [DataMember]
         public int Id
         {
             get { return _id; }
@@ -19,6 +22,7 @@ namespace AutoReservation.Common.DataTransferObjects
         }
 
         private string _vorname;
+        [DataMember]
         public string Vorname
         {
             get { return _vorname; }
@@ -28,11 +32,13 @@ namespace AutoReservation.Common.DataTransferObjects
                 {
                     _vorname = value;
                     OnPropertyChanged(nameof(Vorname));
+                    OnPropertyChanged(nameof(Fullname));
                 }
             }
         }
 
         private string _nachname;
+        [DataMember]
         public string Nachname
         {
             get { return _nachname; }
@@ -42,11 +48,13 @@ namespace AutoReservation.Common.DataTransferObjects
                 {
                     _nachname = value;
                     OnPropertyChanged(nameof(Nachname));
+                    OnPropertyChanged(nameof(Fullname));
                 }
             }
         }
 
         private DateTime _geburtsdatum;
+        [DataMember]
         public DateTime Geburtsdatum
         {
             get { return _geburtsdatum; }
@@ -61,6 +69,7 @@ namespace AutoReservation.Common.DataTransferObjects
         }
 
         private byte[] _rowVersion;
+        [DataMember]
         public byte[] RowVersion
         {
             get { return _rowVersion; }
@@ -72,6 +81,11 @@ namespace AutoReservation.Common.DataTransferObjects
                     OnPropertyChanged(nameof(RowVersion));
                 }
             }
+        }
+
+        public string Fullname
+        {
+            get { return Vorname + " " + Nachname; }
         }
 
         public override string ToString()

@@ -2,9 +2,59 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:AutoReservation.GUI">
 
-    <Style x:Key="ControlButton" TargetType="Button">
+    <Style x:Key="ControlButton" TargetType="{x:Type Button}">
         <Setter Property="Margin" Value="20,10"/>
         <Setter Property="Padding" Value="5"/>
     </Style>
+    <Style x:Key="ListItemKey" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="5,10"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="ListItemValue" TargetType="{x:Type TextBox}">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="Dropdown" TargetType="{x:Type ComboBox}">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="DatePicker" TargetType="{x:Type DatePicker}">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="{x:Type GridViewColumnHeader}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GridViewColumnHeader">
+                    <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
+                        <Border BorderBrush="Gray" BorderThickness="0,0,1,0" Margin="0,5">
+                            <ContentPresenter Content="{TemplateBinding Content}" Margin="10,2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </Border>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <DataTemplate x:Key="DateDisplay">
+        <DockPanel>
+            <TextBlock HorizontalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                        <Binding Path="Day"/>
+                        <Binding Path="Month"/>
+                        <Binding Path="Year"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </DockPanel>
+    </DataTemplate>
 
 </ResourceDictionary>

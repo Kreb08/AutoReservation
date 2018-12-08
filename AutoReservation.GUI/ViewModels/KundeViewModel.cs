@@ -1,23 +1,27 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.Interfaces;
+using AutoReservation.GUI.Commands;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ServiceModel;
 using System.Windows;
 
 namespace AutoReservation.GUI.ViewModels
 {
-    public class AutoViewModel : OverviewTemplate<AutoDto>
+    public class KundeViewModel : OverviewTemplate<KundeDto>
     {
-        public AutoViewModel()
+        public KundeViewModel()
         {
-            _list = new ObservableCollection<AutoDto>(target.Autos);
+            _list = new ObservableCollection<KundeDto>(target.Kunden);
         }
 
         public override void Add()
         {
-            Window AutoDetails = new AutoDetailsWindow();
-            AutoDetails.DataContext = new AutoDetailsVM(AutoDetails);
-            AutoDetails.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
-            AutoDetails.Show();
+            Window DetailsWindow = new KundeDetailsWindow();
+            DetailsWindow.DataContext = new KundeDetailsVM(DetailsWindow);
+            DetailsWindow.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
+            DetailsWindow.Show();
         }
 
         public override bool CanAdd()
@@ -27,9 +31,9 @@ namespace AutoReservation.GUI.ViewModels
 
         public override void Modify()
         {
-            Window AutoDetails = new AutoDetailsWindow();
-            AutoDetails.DataContext = new AutoDetailsVM(AutoDetails, Selected);
-            AutoDetails.Show();
+            Window DetailsWindow = new KundeDetailsWindow();
+            DetailsWindow.DataContext = new KundeDetailsVM(DetailsWindow, Selected);
+            DetailsWindow.Show();
         }
 
         public override bool CanModify()
@@ -43,7 +47,7 @@ namespace AutoReservation.GUI.ViewModels
 
         public override void Delete()
         {
-            target.DeleteAuto(Selected);
+            target.DeleteKunde(Selected);
         }
 
         public override bool CanDelete()

@@ -10,6 +10,17 @@ namespace AutoReservation.BusinessLayer
     public class ReservationManager
         : ManagerBase {
 
+        public List<Reservation> List
+        {
+            get
+            {
+                using (AutoReservationContext context = new AutoReservationContext())
+                {
+                    return context.Reservationen.Include(o => o.Auto).Include(o => o.Kunde).ToList();
+                }
+            }
+        }
+
         public Reservation GetById(int id) {
             using (AutoReservationContext context = new AutoReservationContext()) {
                 return context.Reservationen.Find(id);

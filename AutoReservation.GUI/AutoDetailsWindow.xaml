@@ -1,0 +1,54 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutoReservation.GUI"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:DataTransferObjects="clr-namespace:AutoReservation.Common.DataTransferObjects;assembly=AutoReservation.Common" x:Class="AutoReservation.GUI.AutoDetailsWindow"
+        mc:Ignorable="d"
+        Title="Auto Details" Width="400" ResizeMode="NoResize" SizeToContent="Height" Topmost="True" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <ObjectDataProvider x:Key="Klassen"
+            MethodName="GetValues"
+            ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="DataTransferObjects:AutoKlasse"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <Grid Height="50" VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+            <Button Style="{StaticResource ControlButton}" Content="Bestätigen" Command="{Binding CommitCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <Button Style="{StaticResource ControlButton}" Content="Abbrechen" Command="{Binding CancleCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid DockPanel.Dock="Top" Margin="20,20,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource ListItemKey}" Grid.Row="0" Text="Typ"/>
+            <TextBlock Style="{StaticResource ListItemKey}" Grid.Row="1" Text="Marke"/>
+            <TextBlock Style="{StaticResource ListItemKey}" Grid.Row="2" Text="Tages Tarif"/>
+            <TextBlock Style="{StaticResource ListItemKey}" Grid.Row="3" Text="Basis Tarif"/>
+
+            <ComboBox Style="{StaticResource Dropdown}" ItemsSource="{Binding Source={StaticResource Klassen}}" SelectedItem="{Binding AutoKlasse}" Grid.Column="1"/>
+            <TextBox Style="{StaticResource ListItemValue}" Text="{Binding Marke}" Grid.Column="1" Grid.Row="1"/>
+            <TextBox Style="{StaticResource ListItemValue}" Text="{Binding Tagestarif}" Grid.Column="1" Grid.Row="2"/>
+            <TextBox Style="{StaticResource ListItemValue}" Text="{Binding Basistarif}" IsEnabled="{Binding IsBasistarifEnabled}" Grid.Column="1" Grid.Row="3"/>
+        </Grid>
+    </DockPanel>
+</Window>

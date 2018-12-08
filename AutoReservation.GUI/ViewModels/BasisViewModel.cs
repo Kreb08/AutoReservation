@@ -1,10 +1,17 @@
-﻿using System.ComponentModel;
+﻿using AutoReservation.Common.Interfaces;
+using AutoReservation.GUI.Commands;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.ServiceModel;
 
 namespace AutoReservation.GUI.ViewModels
 {
     public abstract class BasisViewModel : INotifyPropertyChanged
     {
+        private static ChannelFactory<IAutoReservationService> channelFactory = new ChannelFactory<IAutoReservationService>("AutoReservationService");
+        protected IAutoReservationService target = channelFactory.CreateChannel();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)

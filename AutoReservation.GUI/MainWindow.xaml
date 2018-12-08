@@ -20,11 +20,11 @@
             </TabItem.DataContext>
             <DockPanel Background="#FFE5E5E5">
                 <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
-                    <Button Style="{StaticResource ControlButton}" Content="Auto Hinzufügen" Click="ButtonAddCar" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Auto Bearbeiten" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Auto Löschen" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    <Button Style="{StaticResource ControlButton}" Content="Auto Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                    <Button Style="{StaticResource ControlButton}" Content="Auto Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                    <Button Style="{StaticResource ControlButton}" Content="Auto Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                 </Grid>
-                <ListView Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Autos}" SelectedItem="{Binding SelectedAuto}" SelectionMode="Single">
+                <ListView Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -39,10 +39,52 @@
             </DockPanel>
         </TabItem>
         <TabItem Header="Kunden">
-            <Grid Background="#FFE5E5E5"/>
+            <TabItem.DataContext>
+                <viewModels:KundeViewModel/>
+            </TabItem.DataContext>
+            <DockPanel Background="#FFE5E5E5">
+                <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+                    <Button Style="{StaticResource ControlButton}" Content="Kunde Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                    <Button Style="{StaticResource ControlButton}" Content="Kunde Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                    <Button Style="{StaticResource ControlButton}" Content="Kunde Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                </Grid>
+                <ListView Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Vorname" DisplayMemberBinding="{Binding Vorname}"/>
+                                <GridViewColumn Header="Nachname" DisplayMemberBinding="{Binding Nachname}"/>
+                                <GridViewColumn Header="Geburtsdatum" DisplayMemberBinding="{Binding Geburtsdatum, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
         </TabItem>
         <TabItem Header="Reservationen">
-            <Grid Background="#FFE5E5E5"/>
+            <TabItem.DataContext>
+                <viewModels:ReservationViewModel/>
+            </TabItem.DataContext>
+            <DockPanel Background="#FFE5E5E5">
+                <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+                    <Button Style="{StaticResource ControlButton}" Content="Reservation Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                    <Button Style="{StaticResource ControlButton}" Content="Reservation Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                    <Button Style="{StaticResource ControlButton}" Content="Reservation Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                </Grid>
+                <ListView Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Reservations Nr." DisplayMemberBinding="{Binding ReservationsNr}"/>
+                                <GridViewColumn Header="Von" DisplayMemberBinding="{Binding Von, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                                <GridViewColumn Header="Bis" DisplayMemberBinding="{Binding Bis, StringFormat=\{0:dd.MM.yyyy\}}" />
+                                <GridViewColumn Header="Kunde" DisplayMemberBinding="{Binding Kunde.Fullname}"/>
+                                <GridViewColumn Header="Auto" DisplayMemberBinding="{Binding Auto.Marke}"/>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
         </TabItem>
     </TabControl>
 </Window>

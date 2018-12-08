@@ -6,6 +6,7 @@ namespace AutoReservation.Service.Wcf.Testing
         : ServiceTestBase
     {
         private IAutoReservationService target;
-        protected override IAutoReservationService Target => target ?? (target = new AutoReservationService());
+        protected override IAutoReservationService Target
+            => target ?? (target = new AutoReservationService());
     }
 }
