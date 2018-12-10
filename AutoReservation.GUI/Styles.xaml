@@ -30,6 +30,8 @@
         <Setter Property="Padding" Value="10,0,0,0"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
+
+    <!--
     <Style TargetType="{x:Type GridViewColumnHeader}">
         <Setter Property="Template">
             <Setter.Value>
@@ -43,17 +45,19 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <DataTemplate x:Key="DateDisplay">
-        <DockPanel>
-            <TextBlock HorizontalAlignment="Center">
-                <TextBlock.Text>
-                    <MultiBinding StringFormat="{}{0}.{1}.{2}">
-                        <Binding Path="Day"/>
-                        <Binding Path="Month"/>
-                        <Binding Path="Year"/>
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
+    -->
+
+    <DataTemplate x:Key="HeaderTemplateArrowUp">
+        <DockPanel LastChildFill="True" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type GridViewColumnHeader}}}">
+            <Path x:Name="arrowUp" StrokeThickness="1" Fill="Gray" Data="M 5,10 L 15,10 L 10,5 L 5,10" DockPanel.Dock="Right" Width="20" HorizontalAlignment="Right" Margin="5,0" SnapsToDevicePixels="True"/>
+            <TextBlock Text="{Binding }" />
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="HeaderTemplateArrowDown">
+        <DockPanel LastChildFill="True" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type GridViewColumnHeader}}}">
+            <Path x:Name="arrowDown" StrokeThickness="1" Fill="Gray"  Data="M 5,5 L 10,10 L 15,5 L 5,5" DockPanel.Dock="Right" Width="20" HorizontalAlignment="Right" Margin="5,0,5,0" SnapsToDevicePixels="True"/>
+            <TextBlock Text="{Binding }" />
         </DockPanel>
     </DataTemplate>
 

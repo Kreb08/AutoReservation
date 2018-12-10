@@ -47,7 +47,10 @@ namespace AutoReservation.GUI.ViewModels
 
         public override void Delete()
         {
-            target.DeleteKunde(Selected);
+            if (MessageBox.Show("Reservation wirklich löschen?", "Bestätigen", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                target.DeleteKunde(Selected);
+            }
         }
 
         public override bool CanDelete()

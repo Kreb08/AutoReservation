@@ -24,7 +24,7 @@
                     <Button Style="{StaticResource ControlButton}" Content="Auto Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                     <Button Style="{StaticResource ControlButton}" Content="Auto Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                 </Grid>
-                <ListView Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
+                <ListView x:Name="lvAuto" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" >
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -48,7 +48,7 @@
                     <Button Style="{StaticResource ControlButton}" Content="Kunde Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                     <Button Style="{StaticResource ControlButton}" Content="Kunde Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                 </Grid>
-                <ListView Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
+                <ListView x:Name="lvKunde" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -68,10 +68,9 @@
             <DockPanel Background="#FFE5E5E5">
                 <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
                     <Button Style="{StaticResource ControlButton}" Content="Reservation Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Reservation Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                     <Button Style="{StaticResource ControlButton}" Content="Reservation Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                 </Grid>
-                <ListView Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
+                <ListView x:Name="lvReservation" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>

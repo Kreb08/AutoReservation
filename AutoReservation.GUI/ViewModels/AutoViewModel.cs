@@ -1,7 +1,11 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.GUI.Commands;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace AutoReservation.GUI.ViewModels
 {
@@ -43,7 +47,10 @@ namespace AutoReservation.GUI.ViewModels
 
         public override void Delete()
         {
-            target.DeleteAuto(Selected);
+            if (MessageBox.Show("Reservation wirklich löschen?", "Bestätigen", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                target.DeleteAuto(Selected);
+            }
         }
 
         public override bool CanDelete()
@@ -53,6 +60,15 @@ namespace AutoReservation.GUI.ViewModels
                 return false;
             }
             return true;
+        }
+
+        /*
+        
+        */
+
+        public void sort(object sender, RoutedEventArgs e)
+        {
+            _list.OrderBy(o => o.Marke);
         }
     }
 }
