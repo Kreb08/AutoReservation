@@ -1,39 +1,31 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.DataTransferObjects.Faults;
 using System;
 using System.Collections.ObjectModel;
+using System.ServiceModel;
 using System.Windows;
 
 namespace AutoReservation.GUI.ViewModels
 {
     public class ReservationDetailsVM : DetailsTemplate<ReservationDto>
     {
-        public ReservationDetailsVM(Window window, ReservationDto reservation = null) : base(window, reservation)
+        public ReservationDetailsVM(Window window, OverviewTemplate<ReservationDto> parentVm, ReservationDto reservation = null) : base(window, parentVm, reservation)
         {
             if (Current == null)
             {
-                Current = new ReservationDto() { Von = DateTime.Today, Bis = DateTime.Today };
+                Current = new ReservationDto() { Von = DateTime.Today, Bis = DateTime.Today.AddDays(1) };
             }
             Von = Current.Von;
             Bis = Current.Bis;
             Kunde = Current.Kunde;
             Auto = Current.Auto;
 
-            _kunden = new ObservableCollection<KundeDto>(target.Kunden);
+            Kunden = new ObservableCollection<KundeDto>(target.Kunden);
 
-            _autos = new ObservableCollection<AutoDto>(target.Autos);
+            Autos = new ObservableCollection<AutoDto>(target.Autos);
         }
-
-        private readonly ObservableCollection<KundeDto> _kunden;
-        public ObservableCollection<KundeDto> Kunden
-        {
-            get { return _kunden; }
-        }
-
-        private readonly ObservableCollection<AutoDto> _autos;
-        public ObservableCollection<AutoDto> Autos
-        {
-            get { return _autos; }
-        }
+        public ObservableCollection<KundeDto> Kunden { get; }
+        public ObservableCollection<AutoDto> Autos { get; }
 
         private DateTime _von;
         public DateTime Von
@@ -109,7 +101,7 @@ namespace AutoReservation.GUI.ViewModels
             {
                 return false;
             }
-            if(Auto == null)
+            if (Auto == null)
             {
                 return false;
             }
@@ -118,41 +110,61 @@ namespace AutoReservation.GUI.ViewModels
 
         public override void Commit()
         {
-            
-
-            if (Current.ReservationsNr == 0)
+            if (AddNewReservation())
             {
-                AddNewReservation();
+                ParentVm.UpdateList();
+                Window.Close();
             }
-            else
-            {
-                SaveReservation();
-            }
-            Window.Close();
         }
 
-        public void AddNewReservation()
+        public bool AddNewReservation()
         {
-            target.InsertReservation(new ReservationDto()
+            try
             {
-                Von = Von,
-                Bis = Bis,
-                Kunde = Kunde,
-                Auto = Auto
-            });
-        }
-
-        public void SaveReservation()
-        {
-            target.UpdateReservation(new ReservationDto()
+                target.InsertReservation(new ReservationDto()
+                {
+                    Von = Von,
+                    Bis = Bis,
+                    Kunde = Kunde,
+                    Auto = Auto
+                });
+                return true;
+            }
+            catch (FaultException<DateRangeFault> e)
             {
-                ReservationsNr = Current.ReservationsNr,
-                Von = Von,
-                Bis = Bis,
-                Kunde = Kunde,
-                Auto = Auto,
-                RowVersion = Current.RowVersion
-            });
+                MessageBox.Show(
+                    "Reservation konnte nicht hinzugefügt werden.\n" +
+                    "Reservationsdauer ist zu kurz oder Datum falsch.\n\n" +
+                    e.Detail.reservation,
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (FaultException<AutoUnavailableFault> e)
+            {
+                MessageBox.Show(
+                    "Reservation konnte nicht hinzugefügt werden.\n" +
+                    "Das gewählte Auto ist zur gewünschten Zeit nicht verfügbar.\n\n" +
+                    e.Detail.reservation.ToString(),
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (FaultException)
+            {
+                MessageBox.Show("Hinzufügen Fehlgeschlagen.",
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Ein Fehler ist aufgetreten.",
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            return false;
         }
 
         public override bool CanCancle()

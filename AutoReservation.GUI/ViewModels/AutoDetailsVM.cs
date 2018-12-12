@@ -1,17 +1,14 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
-using AutoReservation.GUI.Commands;
+using AutoReservation.Common.DataTransferObjects.Faults;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ServiceModel;
 using System.Windows;
 
 namespace AutoReservation.GUI.ViewModels
 {
     public class AutoDetailsVM : DetailsTemplate<AutoDto>
     {
-        public AutoDetailsVM(Window window, AutoDto auto = null) : base(window, auto)
+        public AutoDetailsVM(Window window, OverviewTemplate<AutoDto> parentVm, AutoDto auto = null) : base(window, parentVm, auto)
         {
             if(Current == null)
             {
@@ -125,37 +122,101 @@ namespace AutoReservation.GUI.ViewModels
         {
             if(Current.Id == 0)
             {
-                AddNewAuto();
+                if (!AddNewAuto())
+                {
+                    return;
+                }
             }
             else
             {
-                SaveAuto();
+                if (!SaveAuto())
+                {
+                    return;
+                }
             }
+            ParentVm.UpdateList();
             Window.Close();
         }
 
-        public void AddNewAuto()
+        public bool AddNewAuto()
         {
-            target.InsertAuto(new AutoDto()
+            try
             {
-                Marke = Marke,
-                Tagestarif = Tagestarif,
-                Basistarif = Basistarif,
-                AutoKlasse = AutoKlasse
-            });
+                target.InsertAuto(new AutoDto()
+                {
+                    Marke = Marke,
+                    Tagestarif = Tagestarif,
+                    Basistarif = Basistarif,
+                    AutoKlasse = AutoKlasse
+                });
+                return true;
+            }
+            catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Hinzufügen Fehlgeschlagen.\n\n" +
+                    e.Message,
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist aufgetreten.\n\n"+
+                    e.Message,
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            return false;
         }
 
-        public void SaveAuto()
+        public bool SaveAuto()
         {
-            target.UpdateAuto(new AutoDto()
+            try
             {
-                Id = Current.Id,
-                Marke = Marke,
-                Tagestarif = Tagestarif,
-                Basistarif = Basistarif,
-                AutoKlasse = AutoKlasse,
-                RowVersion = Current.RowVersion
-            });
+                target.UpdateAuto(new AutoDto()
+                {
+                    Id = Current.Id,
+                    Marke = Marke,
+                    Tagestarif = Tagestarif,
+                    Basistarif = Basistarif,
+                    AutoKlasse = AutoKlasse,
+                    RowVersion = Current.RowVersion
+                });
+                return true;
+            }
+            catch (FaultException<OptimisticConcurrencyFault<AutoDto>> e)
+            {
+                MessageBox.Show(
+                    "Auto konnte nicht gespeichert werden.\n" +
+                    "Auto wurde in der Zwischenzeit bereits aktualisiert.\n\n" +
+                    e.Detail.CurrentEntity.ToString() + "\n" +
+                    e.Detail.FaultEntity.ToString(),
+                    "Fehler beim Speichern",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Speichern Fehlgeschlagen.\n\n" +
+                    e.Message,
+                    "Fehler beim Speichern",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist aufgetreten.\n\n" + 
+                    e.Message,
+                    "Fehler beim Speichern",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            return false;
         }
 
         public override bool CanCancle()

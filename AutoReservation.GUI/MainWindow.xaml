@@ -3,87 +3,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:AutoReservation.GUI.ViewModels"
+        xmlns:views="clr-namespace:AutoReservation.GUI.Views"
         mc:Ignorable="d"
         Title="Auto Reservation" Height="450" Width="800">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
     <TabControl>
         <TabItem Header="Autos">
-            <TabItem.DataContext>
-                <viewModels:AutoViewModel/>
-            </TabItem.DataContext>
-            <DockPanel Background="#FFE5E5E5">
-                <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
-                    <Button Style="{StaticResource ControlButton}" Content="Auto Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Auto Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Auto Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                </Grid>
-                <ListView x:Name="lvAuto" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" >
-                    <ListView.View>
-                        <GridView>
-                            <GridView.Columns>
-                                <GridViewColumn Header="Marke" DisplayMemberBinding="{Binding Marke}"/>
-                                <GridViewColumn Header="Auto Klasse" DisplayMemberBinding="{Binding AutoKlasse}"/>
-                                <GridViewColumn Header="Tagestarif" DisplayMemberBinding="{Binding Tagestarif}"/>
-                                <GridViewColumn Header="Basistarif" DisplayMemberBinding="{Binding Basistarif}"/>
-                            </GridView.Columns>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </DockPanel>
+            <views:AutoView DataContext="{Binding AutoVm}"/>
         </TabItem>
         <TabItem Header="Kunden">
-            <TabItem.DataContext>
-                <viewModels:KundeViewModel/>
-            </TabItem.DataContext>
-            <DockPanel Background="#FFE5E5E5">
-                <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
-                    <Button Style="{StaticResource ControlButton}" Content="Kunde Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Kunde Bearbeiten" Command="{Binding ModifyCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Kunde Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                </Grid>
-                <ListView x:Name="lvKunde" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
-                    <ListView.View>
-                        <GridView>
-                            <GridView.Columns>
-                                <GridViewColumn Header="Vorname" DisplayMemberBinding="{Binding Vorname}"/>
-                                <GridViewColumn Header="Nachname" DisplayMemberBinding="{Binding Nachname}"/>
-                                <GridViewColumn Header="Geburtsdatum" DisplayMemberBinding="{Binding Geburtsdatum, StringFormat=\{0:dd.MM.yyyy\}}"/>
-                            </GridView.Columns>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </DockPanel>
+            <views:KundeView DataContext="{Binding KundeVm}"/>
         </TabItem>
         <TabItem Header="Reservationen">
-            <TabItem.DataContext>
-                <viewModels:ReservationViewModel/>
-            </TabItem.DataContext>
-            <DockPanel Background="#FFE5E5E5">
-                <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
-                    <Button Style="{StaticResource ControlButton}" Content="Reservation Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                    <Button Style="{StaticResource ControlButton}" Content="Reservation Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                </Grid>
-                <ListView x:Name="lvReservation" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single">
-                    <ListView.View>
-                        <GridView>
-                            <GridView.Columns>
-                                <GridViewColumn Header="Reservations Nr." DisplayMemberBinding="{Binding ReservationsNr}"/>
-                                <GridViewColumn Header="Von" DisplayMemberBinding="{Binding Von, StringFormat=\{0:dd.MM.yyyy\}}"/>
-                                <GridViewColumn Header="Bis" DisplayMemberBinding="{Binding Bis, StringFormat=\{0:dd.MM.yyyy\}}" />
-                                <GridViewColumn Header="Kunde" DisplayMemberBinding="{Binding Kunde.Fullname}"/>
-                                <GridViewColumn Header="Auto" DisplayMemberBinding="{Binding Auto.Marke}"/>
-                            </GridView.Columns>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </DockPanel>
+            <views:ReservationView DataContext="{Binding ReservationVm}"/>
         </TabItem>
     </TabControl>
 </Window>

@@ -23,11 +23,11 @@ namespace AutoReservation.BusinessLayer
 
         public Reservation GetById(int id) {
             using (AutoReservationContext context = new AutoReservationContext()) {
-                return context.Reservationen.Find(id);
+                return context.Reservationen.Include(o => o.Auto).Include(o => o.Kunde).SingleOrDefault(o => o.ReservationsNr == id);
             }
         }
 
-        public void Update(Reservation reservation) {
+        public Reservation Update(Reservation reservation) {
             using (AutoReservationContext context = new AutoReservationContext()) {
                 IsValid(context, reservation);
                 context.Reservationen.Update(reservation);
@@ -36,15 +36,17 @@ namespace AutoReservation.BusinessLayer
                 } catch (DbUpdateConcurrencyException) {
                     throw CreateOptimisticConcurrencyException(context, reservation);
                 }
+                return GetById(reservation.ReservationsNr);
             }
         }
 
-        public void Insert(Reservation reservation) {
+        public Reservation Insert(Reservation reservation) {
             using (AutoReservationContext context = new AutoReservationContext()) {
                 IsValid(context, reservation);
                 context.Reservationen.Add(reservation);
                 context.SaveChanges();
             }
+            return reservation;
         }
 
         public void Remove(Reservation reservation) {
@@ -58,7 +60,7 @@ namespace AutoReservation.BusinessLayer
             if (!DateRangeCheck(reservation)) {
                 throw CreateInvalidDateException(context, reservation);
             }
-            if (!AvailibilityCheck(context, reservation)) {
+            if (!AvailibilityCheck(reservation)) {
                 throw CreateAutoUnavailableException(context, reservation);
             }
         }
@@ -71,22 +73,29 @@ namespace AutoReservation.BusinessLayer
             return true;
         }
 
-        public bool AvailibilityCheck(AutoReservationContext context, Reservation reservation) {
-            List<Reservation> reservationen = context.Reservationen
-                .Where(r => reservation.AutoId == r.AutoId && reservation.ReservationsNr != r.ReservationsNr)
-                .ToList();
-            foreach(Reservation res in reservationen) {
-                if(reservation.Von < res.Von && reservation.Bis > res.Von) {
-                    return false;
+        public bool AvailibilityCheck(Reservation reservation) {
+            using (AutoReservationContext context = new AutoReservationContext())
+            {
+                List<Reservation> reservationen = context.Reservationen
+                    .Where(r => reservation.AutoId == r.AutoId && reservation.ReservationsNr != r.ReservationsNr)
+                    .ToList();
+                foreach (Reservation res in reservationen)
+                {
+                    if (reservation.Von < res.Von && reservation.Bis > res.Von)
+                    {
+                        return false;
+                    }
+                    if (reservation.Von >= res.Von && reservation.Bis <= res.Bis)
+                    {
+                        return false;
+                    }
+                    if (reservation.Von < res.Bis && reservation.Bis > res.Bis)
+                    {
+                        return false;
+                    }
                 }
-                if(reservation.Von >= res.Von && reservation.Bis <= res.Bis) {
-                    return false;
-                }
-                if(reservation.Von < res.Bis && reservation.Bis > res.Bis) {
-                    return false;
-                }
+                return true;
             }
-            return true;
         }
     }
 }

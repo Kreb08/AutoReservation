@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoReservation.GUI.ViewModels;
 using System.Windows;
 
 namespace AutoReservation.GUI {
@@ -11,5 +6,16 @@ namespace AutoReservation.GUI {
     /// Interaktionslogik für "App.xaml"
     /// </summary>
     public partial class App : Application {
+
+        public AppVm AppVm{ get; set; }
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            MainWindow = new MainWindow();
+            AppVm = new AppVm(MainWindow);
+            MainWindow.DataContext = AppVm;
+            MainWindow.Show();
+        }
+
     }
 }

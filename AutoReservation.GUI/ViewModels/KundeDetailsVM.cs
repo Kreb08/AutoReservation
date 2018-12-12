@@ -1,12 +1,14 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.Common.DataTransferObjects.Faults;
 using System;
+using System.ServiceModel;
 using System.Windows;
 
 namespace AutoReservation.GUI.ViewModels
 {
     public class KundeDetailsVM : DetailsTemplate<KundeDto>
     {
-        public KundeDetailsVM(Window window, KundeDto kunde = null) : base(window, kunde)
+        public KundeDetailsVM(Window window, OverviewTemplate<KundeDto> parentVm, KundeDto kunde = null) : base(window, parentVm, kunde)
         {
             if (Current == null)
             {
@@ -89,35 +91,99 @@ namespace AutoReservation.GUI.ViewModels
         {
             if(Current.Id == 0)
             {
-                AddNewKunde();
+                if (!AddNewKunde())
+                {
+                    return;
+                }
             }
             else
             {
-                SaveKunde();
+                if (!SaveKunde())
+                {
+                    return;
+                }
             }
+            ParentVm.UpdateList();
             Window.Close();
         }
 
-        public void AddNewKunde()
+        public bool AddNewKunde()
         {
-            target.InsertKunde(new KundeDto()
+            try
             {
-                Vorname = Vorname,
-                Nachname = Nachname,
-                Geburtsdatum = Geburtsdatum
-            });
+                target.InsertKunde(new KundeDto()
+                {
+                    Vorname = Vorname,
+                    Nachname = Nachname,
+                    Geburtsdatum = Geburtsdatum
+                });
+                return true;
+            }
+            catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Hinzufügen Fehlgeschlagen.\n\n" +
+                    e.Message,
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist aufgetreten.\n\n" +
+                    e.Message,
+                    "Fehler beim Hinzufügen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            return false;
         }
 
-        public void SaveKunde()
+        public bool SaveKunde()
         {
-            target.UpdateKunde(new KundeDto()
+            try
             {
-                Id = Current.Id,
-                Vorname = Vorname,
-                Nachname = Nachname,
-                Geburtsdatum = Geburtsdatum,
-                RowVersion = Current.RowVersion
-            });
+                target.UpdateKunde(new KundeDto()
+                {
+                    Id = Current.Id,
+                    Vorname = Vorname,
+                    Nachname = Nachname,
+                    Geburtsdatum = Geburtsdatum,
+                    RowVersion = Current.RowVersion
+                });
+                return true;
+            }
+            catch (FaultException<OptimisticConcurrencyFault<KundeDto>> e)
+            {
+                MessageBox.Show(
+                    "Kunde konnte nicht gespeichert werden.\n" +
+                    "Kunde wurde in der Zwischenzeit bereits aktualisiert.\n\n" +
+                    e.Detail.CurrentEntity.ToString() + "\n"+
+                    e.Detail.FaultEntity.ToString(),
+                    "Fehler beim Speichern",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Speichern Fehlgeschlagen.\n\n" +
+                    e.Message,
+                    "Fehler beim Speichern",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist aufgetreten.\n\n" +
+                    e.Message,
+                    "Fehler beim Speichern",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            return false;
         }
     }
 }

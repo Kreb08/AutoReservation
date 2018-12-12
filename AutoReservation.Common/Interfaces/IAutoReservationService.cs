@@ -12,13 +12,17 @@ namespace AutoReservation.Common.Interfaces
             [OperationContract]
             get;
         }
+
         [OperationContract]
         AutoDto GetAuto(int id);
+
         [OperationContract]
-        void InsertAuto(AutoDto auto);
+        AutoDto InsertAuto(AutoDto auto);
+
         [OperationContract]
         [FaultContract(typeof(OptimisticConcurrencyFault<AutoDto>))]
-        void UpdateAuto(AutoDto auto);
+        AutoDto UpdateAuto(AutoDto auto);
+
         [OperationContract]
         void DeleteAuto(AutoDto auto);
 
@@ -27,13 +31,17 @@ namespace AutoReservation.Common.Interfaces
             [OperationContract]
             get;
         }
+
         [OperationContract]
         KundeDto GetKunde(int id);
+
         [OperationContract]
-        void InsertKunde(KundeDto kunde);
+        KundeDto InsertKunde(KundeDto kunde);
+
         [OperationContract]
         [FaultContract(typeof(OptimisticConcurrencyFault<KundeDto>))]
-        void UpdateKunde(KundeDto kunde);
+        KundeDto UpdateKunde(KundeDto kunde);
+
         [OperationContract]
         void DeleteKunde(KundeDto kunde);
 
@@ -42,14 +50,25 @@ namespace AutoReservation.Common.Interfaces
             [OperationContract]
             get;
         }
+
         [OperationContract]
         ReservationDto GetReservation(int id);
+
         [OperationContract]
-        void InsertReservation(ReservationDto reservation);
+        [FaultContract(typeof(DateRangeFault))]
+        [FaultContract(typeof(AutoUnavailableFault))]
+        ReservationDto InsertReservation(ReservationDto reservation);
+
         [OperationContract]
         [FaultContract(typeof(OptimisticConcurrencyFault<ReservationDto>))]
-        void UpdateReservation(ReservationDto reservation);
+        [FaultContract(typeof(DateRangeFault))]
+        [FaultContract(typeof(AutoUnavailableFault))]
+        ReservationDto UpdateReservation(ReservationDto reservation);
+
         [OperationContract]
         void DeleteReservation(ReservationDto reservation);
+
+        [OperationContract]
+        bool CheckAvailibility(ReservationDto reservation);
     }
 }

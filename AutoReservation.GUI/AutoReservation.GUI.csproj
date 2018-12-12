@@ -64,6 +64,7 @@
       <DependentUpon>KundeDetailsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="ViewModels\AppVm.cs" />
     <Compile Include="ViewModels\AutoDetailsVM.cs" />
     <Compile Include="ViewModels\AutoViewModel.cs" />
     <Compile Include="ViewModels\BasisViewModel.cs" />
@@ -73,6 +74,15 @@
     <Compile Include="ViewModels\ReservationViewModel.cs" />
     <Compile Include="ViewModels\KundeViewModel.cs" />
     <Compile Include="ViewModels\OverviewTemplate.cs" />
+    <Compile Include="Views\AutoView.xaml.cs">
+      <DependentUpon>AutoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KundeView.xaml.cs">
+      <DependentUpon>KundeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReservationView.xaml.cs">
+      <DependentUpon>ReservationView.xaml</DependentUpon>
+    </Compile>
     <Page Include="ReservationDetailsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +113,18 @@
     <Page Include="Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AutoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KundeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReservationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -141,5 +163,6 @@
       <Name>AutoReservation.Service.Wcf</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

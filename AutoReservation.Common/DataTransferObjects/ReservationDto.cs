@@ -96,6 +96,11 @@ namespace AutoReservation.Common.DataTransferObjects
             }
         }
 
+        public override int getId()
+        {
+            return ReservationsNr;
+        }
+
         public override string ToString()
             => $"{ReservationsNr}; {Von}; {Bis}; {Auto}; {Kunde}";
     }

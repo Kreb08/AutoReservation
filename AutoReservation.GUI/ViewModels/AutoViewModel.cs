@@ -1,26 +1,23 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
-using AutoReservation.GUI.Commands;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace AutoReservation.GUI.ViewModels
 {
     public class AutoViewModel : OverviewTemplate<AutoDto>
     {
-        public AutoViewModel()
+        public AutoViewModel(Window mainWindow) : base(mainWindow)
         {
-            _list = new ObservableCollection<AutoDto>(target.Autos);
         }
 
         public override void Add()
         {
             Window AutoDetails = new AutoDetailsWindow();
-            AutoDetails.DataContext = new AutoDetailsVM(AutoDetails);
-            AutoDetails.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
+            AutoDetails.DataContext = new AutoDetailsVM(AutoDetails, this);
+            AutoDetails.Owner = mainWindow;
             AutoDetails.Show();
         }
 
@@ -32,7 +29,7 @@ namespace AutoReservation.GUI.ViewModels
         public override void Modify()
         {
             Window AutoDetails = new AutoDetailsWindow();
-            AutoDetails.DataContext = new AutoDetailsVM(AutoDetails, Selected);
+            AutoDetails.DataContext = new AutoDetailsVM(AutoDetails, this, Selected);
             AutoDetails.Show();
         }
 
@@ -47,10 +44,32 @@ namespace AutoReservation.GUI.ViewModels
 
         public override void Delete()
         {
-            if (MessageBox.Show("Reservation wirklich löschen?", "Bestätigen", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Reservation wirklich löschen?", "Bestätigen", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
+            }
+            try
             {
                 target.DeleteAuto(Selected);
+            } catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Löschen Fehlgeschlagen.\n\n" +
+                    e.Message,
+                    "Fehler beim Löschen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist aufgetreten.\n\n" +
+                    e.Message,
+                    "Fehler beim Löschen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            UpdateList();
         }
 
         public override bool CanDelete()
@@ -62,13 +81,33 @@ namespace AutoReservation.GUI.ViewModels
             return true;
         }
 
-        /*
-        
-        */
-
-        public void sort(object sender, RoutedEventArgs e)
+        protected override List<AutoDto> GetList()
         {
-            _list.OrderBy(o => o.Marke);
+            List<AutoDto> list;
+            try
+            {
+                list = target.Autos;
+                return list;
+            }
+            catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Liste konnte nicht aktualisiert werden.\n\n" +
+                    e.Message,
+                    "Fehler beim Aktualisieren",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist beim aktualisieren aufgetreten.\n\n" +
+                    e.Message,
+                    "Fehler beim Aktualisieren",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            return new List<AutoDto>();
         }
     }
 }

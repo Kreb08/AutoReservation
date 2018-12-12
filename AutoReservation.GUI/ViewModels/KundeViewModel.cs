@@ -1,9 +1,6 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
-using AutoReservation.Common.Interfaces;
-using AutoReservation.GUI.Commands;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Windows;
 
@@ -11,16 +8,15 @@ namespace AutoReservation.GUI.ViewModels
 {
     public class KundeViewModel : OverviewTemplate<KundeDto>
     {
-        public KundeViewModel()
+        public KundeViewModel(Window mainWindow) : base(mainWindow)
         {
-            _list = new ObservableCollection<KundeDto>(target.Kunden);
         }
 
         public override void Add()
         {
             Window DetailsWindow = new KundeDetailsWindow();
-            DetailsWindow.DataContext = new KundeDetailsVM(DetailsWindow);
-            DetailsWindow.Owner = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
+            DetailsWindow.DataContext = new KundeDetailsVM(DetailsWindow, this);
+            DetailsWindow.Owner = mainWindow;
             DetailsWindow.Show();
         }
 
@@ -32,7 +28,7 @@ namespace AutoReservation.GUI.ViewModels
         public override void Modify()
         {
             Window DetailsWindow = new KundeDetailsWindow();
-            DetailsWindow.DataContext = new KundeDetailsVM(DetailsWindow, Selected);
+            DetailsWindow.DataContext = new KundeDetailsVM(DetailsWindow, this, Selected);
             DetailsWindow.Show();
         }
 
@@ -47,10 +43,33 @@ namespace AutoReservation.GUI.ViewModels
 
         public override void Delete()
         {
-            if (MessageBox.Show("Reservation wirklich löschen?", "Bestätigen", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Reservation wirklich löschen?", "Bestätigen", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                return;
+            }
+            try
             {
                 target.DeleteKunde(Selected);
             }
+            catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Löschen Fehlgeschlagen.\n\n" +
+                    e.Message,
+                    "Fehler beim Löschen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist aufgetreten.\n\n" +
+                    e.Message,
+                    "Fehler beim Löschen",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            UpdateList();
         }
 
         public override bool CanDelete()
@@ -60,6 +79,35 @@ namespace AutoReservation.GUI.ViewModels
                 return false;
             }
             return true;
+        }
+
+        protected override List<KundeDto> GetList()
+        {
+            List<KundeDto> list;
+            try
+            {
+                list = target.Kunden;
+                return list;
+            }
+            catch (FaultException e)
+            {
+                MessageBox.Show(
+                    "Liste konnte nicht aktualisiert werden.\n\n" +
+                    e.Message,
+                    "Fehler beim Aktualisieren",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(
+                    "Ein Fehler ist beim aktualisieren aufgetreten.\n\n" +
+                    e.Message,
+                    "Fehler beim Aktualisieren",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+            return new List<KundeDto>();
         }
     }
 }

@@ -22,22 +22,24 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
-        public void InsertKunde(Kunde kunde) {
+        public Kunde InsertKunde(Kunde kunde) {
             using (AutoReservationContext context = new AutoReservationContext()) {
                 context.Kunden.Add(kunde);
                 context.SaveChanges();
             }
+            return kunde;
         }
 
-        public void UpdateKunde(Kunde updated) {
+        public Kunde UpdateKunde(Kunde kunde) {
             using (AutoReservationContext context = new AutoReservationContext()) {
-                context.Kunden.Update(updated);
+                context.Kunden.Update(kunde);
                 try {
                     context.SaveChanges();
                 } catch (DbUpdateConcurrencyException) {
-                    throw CreateOptimisticConcurrencyException(context, updated);
+                    throw CreateOptimisticConcurrencyException(context, kunde);
                 }
             }
+            return kunde;
         }
 
         public void RemoveKunde(Kunde kunde) {

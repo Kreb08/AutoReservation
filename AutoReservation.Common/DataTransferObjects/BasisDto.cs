@@ -16,5 +16,7 @@ namespace AutoReservation.Common.DataTransferObjects
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public abstract int getId();
     }
 }

@@ -88,6 +88,11 @@ namespace AutoReservation.Common.DataTransferObjects
             get { return Vorname + " " + Nachname; }
         }
 
+        public override int getId()
+        {
+            return Id;
+        }
+
         public override string ToString()
             => $"{Id}; {Nachname}; {Vorname}; {Geburtsdatum}; {RowVersion}";
     }

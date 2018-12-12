@@ -96,6 +96,11 @@ namespace AutoReservation.Common.DataTransferObjects
             }
         }
 
+        public override int getId()
+        {
+            return Id;
+        }
+
         public override string ToString()
             => $"{Id}; {Marke}; {Tagestarif}; {Basistarif}; {AutoKlasse}; {RowVersion}";
     }

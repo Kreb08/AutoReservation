@@ -1,26 +1,21 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
-using AutoReservation.Common.Interfaces;
 using AutoReservation.GUI.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace AutoReservation.GUI.ViewModels
 {
-    public abstract class DetailsTemplate<T> : BasisViewModel
+    public abstract class DetailsTemplate<T> : BasisViewModel where T: BasisDto
     {
         public RelayCommand CommitCommand { get; set; }
         public RelayCommand CancleCommand { get; set; }
         public T Current { get; set; }
         protected Window Window { get; set; }
+        protected OverviewTemplate<T> ParentVm;
 
-        public DetailsTemplate(Window window, T current)
+        public DetailsTemplate(Window window, OverviewTemplate<T> parentVm, T current)
         {
             Window = window;
+            ParentVm = parentVm;
             Current = current;
 
             CommitCommand = new RelayCommand(() => this.Commit(), () => this.CanCommit());

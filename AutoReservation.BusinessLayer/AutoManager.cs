@@ -23,22 +23,24 @@ namespace AutoReservation.BusinessLayer
             }
         }
 
-        public void InsertAuto(Auto auto) {
+        public Auto InsertAuto(Auto auto) {
             using (AutoReservationContext context = new AutoReservationContext()) {
                 context.Autos.Add(auto);
                 context.SaveChanges();
             }
+            return auto;
         }
 
-        public void UpdateAuto(Auto updated) {
+        public Auto UpdateAuto(Auto auto) {
             using (AutoReservationContext context = new AutoReservationContext()) {
-                context.Autos.Update(updated);
+                context.Autos.Update(auto);
                 try {
                     context.SaveChanges();
                 } catch (DbUpdateConcurrencyException) {
-                    throw CreateOptimisticConcurrencyException(context, updated);
+                    throw CreateOptimisticConcurrencyException(context, auto);
                 }
             }
+            return auto;
         }
 
         public void RemoveAuto(Auto auto) {
