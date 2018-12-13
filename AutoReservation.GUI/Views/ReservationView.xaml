@@ -13,18 +13,18 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Control.Resources>
-    <DockPanel Background="#FFE5E5E5">
+    <DockPanel>
         <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
             <Button Style="{StaticResource ControlButton}" Content="Reservation Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
             <Button Style="{StaticResource ControlButton}" Content="Reservation Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
         </Grid>
         <ListView x:Name="lvReservation" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
             <ListView.View>
-                <GridView>
+                <GridView ColumnHeaderTemplate="{StaticResource HeaderTemplateNoSort}">
                     <GridView.Columns>
                         <GridViewColumn Header="Reservations Nr." DisplayMemberBinding="{Binding ReservationsNr}"/>
                         <GridViewColumn Header="Von" DisplayMemberBinding="{Binding Von, StringFormat=\{0:dd.MM.yyyy\}}"/>
-                        <GridViewColumn Header="Bis" DisplayMemberBinding="{Binding Bis, StringFormat=\{0:dd.MM.yyyy\}}" />
+                        <GridViewColumn Header="Bis" DisplayMemberBinding="{Binding Bis, StringFormat=\{0:dd.MM.yyyy\}}"/>
                         <GridViewColumn Header="Kunde" DisplayMemberBinding="{Binding Kunde.Fullname}"/>
                         <GridViewColumn Header="Auto" DisplayMemberBinding="{Binding Auto.Marke}"/>
                     </GridView.Columns>

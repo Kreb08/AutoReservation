@@ -4,6 +4,7 @@ using AutoReservation.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
+using AutoReservation.BusinessLayer.Exceptions;
 
 namespace AutoReservation.BusinessLayer
 {
@@ -58,10 +59,10 @@ namespace AutoReservation.BusinessLayer
 
         public void IsValid(AutoReservationContext context, Reservation reservation) {
             if (!DateRangeCheck(reservation)) {
-                throw CreateInvalidDateException(context, reservation);
+                throw new InvalidDateException<Reservation>("Datum falsch oder Dauer zu kurz", reservation);
             }
             if (!AvailibilityCheck(reservation)) {
-                throw CreateAutoUnavailableException(context, reservation);
+                throw new AutoUnavailableException<Reservation>("Auto nicht verfügbar", reservation);
             }
         }
 

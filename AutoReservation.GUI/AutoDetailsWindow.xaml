@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
-        <Grid Height="50" VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+        <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
             <Button Style="{StaticResource ControlButton}" Content="Bestätigen" Command="{Binding CommitCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
             <Button Style="{StaticResource ControlButton}" Content="Abbrechen" Command="{Binding CancleCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>

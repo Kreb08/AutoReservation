@@ -16,6 +16,5 @@ namespace AutoReservation.GUI {
             MainWindow.DataContext = AppVm;
             MainWindow.Show();
         }
-
     }
 }

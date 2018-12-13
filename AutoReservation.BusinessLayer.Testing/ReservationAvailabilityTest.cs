@@ -29,9 +29,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Von = DateTime.Today.AddDays(3),
                 Bis = DateTime.Today.AddDays(5)
             };
-            using(AutoReservationContext context = new AutoReservationContext()) {
-                Assert.True(Target.AvailibilityCheck(context, reservation));
-            }
+            Assert.True(Target.AvailibilityCheck(reservation));
         }
 
         [Fact]
@@ -42,9 +40,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Von = DateTime.Today.AddDays(-5),
                 Bis = DateTime.Today.AddDays(-3)
             };
-            using (AutoReservationContext context = new AutoReservationContext()) {
-                Assert.True(Target.AvailibilityCheck(context, reservation));
-            }
+            Assert.True(Target.AvailibilityCheck(reservation));
         }
 
         [Fact]
@@ -55,9 +51,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Von = DateTime.Today,
                 Bis = DateTime.Today.AddDays(1)
             };
-            using (AutoReservationContext context = new AutoReservationContext()) {
-                Assert.True(Target.AvailibilityCheck(context, reservation));
-            }
+            Assert.True(Target.AvailibilityCheck(reservation));
         }
 
         /*
@@ -76,9 +70,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Von = DateTime.Today.AddDays(-1),
                 Bis = DateTime.Today.AddHours(12)
             };
-            using (AutoReservationContext context = new AutoReservationContext()) {
-                Assert.False(Target.AvailibilityCheck(context, reservation));
-            }
+            Assert.False(Target.AvailibilityCheck(reservation));
         }
 
         [Fact]
@@ -89,9 +81,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Von = DateTime.Today,
                 Bis = DateTime.Today.AddDays(1)
             };
-            using (AutoReservationContext context = new AutoReservationContext()) {
-                Assert.False(Target.AvailibilityCheck(context, reservation));
-            }
+            Assert.False(Target.AvailibilityCheck(reservation));
         }
 
         [Fact]
@@ -102,9 +92,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Von = DateTime.Today.AddHours(1),
                 Bis = DateTime.Today.AddHours(12)
             };
-            using (AutoReservationContext context = new AutoReservationContext()) {
-                Assert.False(Target.AvailibilityCheck(context, reservation));
-            }
+            Assert.False(Target.AvailibilityCheck(reservation));
         }
 
         [Fact]
@@ -115,9 +103,7 @@ namespace AutoReservation.BusinessLayer.Testing
                 Von = DateTime.Today.AddHours(12),
                 Bis = DateTime.Today.AddDays(2)
             };
-            using (AutoReservationContext context = new AutoReservationContext()) {
-                Assert.False(Target.AvailibilityCheck(context, reservation));
-            }
+            Assert.False(Target.AvailibilityCheck(reservation));
         }
 
         /*

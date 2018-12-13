@@ -6,15 +6,24 @@
         xmlns:views="clr-namespace:AutoReservation.GUI.Views"
         mc:Ignorable="d"
         Title="Auto Reservation" Height="450" Width="800">
-    <TabControl>
-        <TabItem Header="Autos">
-            <views:AutoView DataContext="{Binding AutoVm}"/>
-        </TabItem>
-        <TabItem Header="Kunden">
-            <views:KundeView DataContext="{Binding KundeVm}"/>
-        </TabItem>
-        <TabItem Header="Reservationen">
-            <views:ReservationView DataContext="{Binding ReservationVm}"/>
-        </TabItem>
-    </TabControl>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel Style="{StaticResource light}">
+        <TabControl>
+            <TabItem Header="Autos">
+                <views:AutoView DataContext="{Binding AutoVm}"/>
+            </TabItem>
+            <TabItem Header="Kunden">
+                <views:KundeView DataContext="{Binding KundeVm}"/>
+            </TabItem>
+            <TabItem Header="Reservationen">
+                <views:ReservationView DataContext="{Binding ReservationVm}"/>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>

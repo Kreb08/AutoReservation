@@ -62,7 +62,8 @@ namespace AutoReservation.GUI.Views
                     // Remove arrow from previously sorted header  
                     if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
                     {
-                        _lastHeaderClicked.Column.HeaderTemplate = null;
+                        _lastHeaderClicked.Column.HeaderTemplate =
+                            Resources["HeaderTemplateNoSort"] as DataTemplate;
                     }
 
                     _lastHeaderClicked = headerClicked;
