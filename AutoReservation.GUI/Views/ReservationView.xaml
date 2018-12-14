@@ -13,10 +13,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Control.Resources>
-    <DockPanel>
+    <DockPanel MinWidth="400">
         <Grid VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
             <Button Style="{StaticResource ControlButton}" Content="Reservation Hinzufügen" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
             <Button Style="{StaticResource ControlButton}" Content="Reservation Löschen" Command="{Binding DeleteCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <CheckBox IsChecked="{Binding IsFiltered}" Content="Nur aktive Reservationen anzeigen" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         </Grid>
         <ListView x:Name="lvReservation" Margin="20,20,20,0" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding List}" SelectedItem="{Binding Selected}" SelectionMode="Single" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
             <ListView.View>

@@ -197,7 +197,8 @@ namespace AutoReservation.Service.Wcf.Testing
             auto2.Marke = "Test2";
 
             Target.UpdateAuto(auto1);
-            Assert.Throws<FaultException<OptimisticConcurrencyFault<AutoDto>>>(() => Target.UpdateAuto(auto2));
+            var exception = Assert.Throws<FaultException<OptimisticConcurrencyFault<AutoDto>>>(() => Target.UpdateAuto(auto2));
+            //Assert.Equal("", exception.Detail.CurrentEntity.Marke);
         }
 
         [Fact]

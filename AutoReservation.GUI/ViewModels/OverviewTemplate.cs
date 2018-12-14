@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace AutoReservation.GUI.ViewModels
 {
@@ -42,20 +41,24 @@ namespace AutoReservation.GUI.ViewModels
                     for (int i = 0; i < List.Count; i++)
                     {
                         T oldItem = List[i];
-                        T updated = updatedList.Find(o => o.getId() == oldItem.getId());
-                        if (updated != null)
+                        int updated = updatedList.FindIndex(o => o.getId() == oldItem.getId());
+                        if (updated >= 0)
                         {
-                            List[i] = updated;
-                            updatedList.Remove(updated);
+                            List<T> newItems = updatedList.GetRange(0, updated);
+                            newItems.Reverse();
+                            newItems.ForEach(item => { List.Insert(i, item); i++; });
+                            List[i] = updatedList[updated];
+                            updatedList.RemoveRange(0,updated + 1);
                         }
                         else
                         {
                             List.RemoveAt(i);
+                            i--;
                         }
                     }
                     updatedList.ForEach(List.Add);
+                    updating = false;
                 });
-                updating = false;
             });
         }
         public ObservableCollection<T> List { get; } = new ObservableCollection<T>();

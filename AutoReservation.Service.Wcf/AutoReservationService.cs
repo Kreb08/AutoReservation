@@ -23,6 +23,7 @@ namespace AutoReservation.Service.Wcf
             {
                 WriteActualMethod();
                 return DtoConverter.ConvertToDtos(autoManager.List);
+                //return autoManager.List.ConvertToDtos();
             }
         }
 

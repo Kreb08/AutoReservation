@@ -22,7 +22,7 @@ namespace AutoReservation.Dal.Entities
         [DataType(DataType.Date)]
         public DateTime Bis { get; set; }
 
-        [ForeignKey("AutoId"), InverseProperty("Reservationen")]
+        [ForeignKey(nameof(AutoId)), InverseProperty("Reservationen")]
         public virtual Auto Auto { get; set; }
 
         [ForeignKey("KundeId"), InverseProperty("Reservationen")]

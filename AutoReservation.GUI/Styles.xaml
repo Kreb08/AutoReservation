@@ -7,21 +7,21 @@
     <Color x:Key="Orange">#FFFF8C10</Color>
     <Color x:Key="LightOrange">#FFFFA23E</Color>
     <Color x:Key="DarkOrange">#FFE07500</Color>
-    <SolidColorBrush x:Key="BrushDarkGray" Color="{StaticResource DarkGray}"/>
-    <SolidColorBrush x:Key="BrushLightGray" Color="{StaticResource LightGray}"/>
-    <SolidColorBrush x:Key="BrushOrange" Color="{StaticResource Orange}"/>
+    <SolidColorBrush x:Key="BrushPrimary" Color="{StaticResource DarkGray}"/>
+    <SolidColorBrush x:Key="BrushSecondary" Color="{StaticResource LightGray}"/>
+    <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource Orange}"/>
     <SolidColorBrush x:Key="BrushHover" Color="{StaticResource DarkOrange}"/>
 
     <Style x:Key="ControlButton" TargetType="{x:Type Button}">
         <Setter Property="Margin" Value="20,10"/>
         <Setter Property="Padding" Value="5"/>
-        <Setter Property="Background" Value="{StaticResource BrushOrange}"/>
+        <Setter Property="Background" Value="{StaticResource BrushAccent}"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}" >
-                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" Margin="{TemplateBinding Margin}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -29,32 +29,63 @@
                             <Setter Property="Background" Value="{StaticResource BrushHover}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="{StaticResource BrushLightGray}"/>
+                            <Setter Property="Background" Value="{StaticResource BrushSecondary}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
 
+    <Style TargetType="{x:Type CheckBox}">
+        <Setter Property="Margin" Value="20,10"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{StaticResource BrushAccent}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushPrimary}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <Border x:Name="Border" Width="15" Height="15" CornerRadius="0" Background="{TemplateBinding Background}" BorderThickness="0" BorderBrush="Transparent" Margin="{TemplateBinding Padding}">
+                                <Path Width="7" Height="7" x:Name="CheckMark" SnapsToDevicePixels="False" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="2" Data="M 0 0 L 7 7 M 0 7 L 7 0" />
+                            </Border>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushHover}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type Grid}">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
     <Style TargetType="{x:Type DockPanel}">
-        <Setter Property="Background" Value="{StaticResource BrushDarkGray}"/>
+        <Setter Property="Background" Value="{StaticResource BrushPrimary}"/>
     </Style>
     <Style x:Key="light" TargetType="{x:Type DockPanel}">
-        <Setter Property="Background" Value="{StaticResource BrushLightGray}"/>
+        <Setter Property="Background" Value="{StaticResource BrushSecondary}"/>
     </Style>
     <Style TargetType="{x:Type TabControl}">
-        <Setter Property="Background" Value="{StaticResource BrushDarkGray}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BrushDarkGray}"/>
+        <Setter Property="Background" Value="{StaticResource BrushPrimary}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushPrimary}"/>
     </Style>
-    
+
     <Style TargetType="{x:Type TabItem}">
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BrushDarkGray}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushPrimary}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
@@ -67,10 +98,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Panel" Property="Background" Value="{StaticResource BrushDarkGray}" />
+                            <Setter TargetName="Panel" Property="Background" Value="{StaticResource BrushPrimary}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="Panel" Property="Background" Value="{StaticResource BrushLightGray}" />
+                            <Setter TargetName="Panel" Property="Background" Value="{StaticResource BrushSecondary}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -84,54 +115,16 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
     <Style TargetType="{x:Type ListView}">
-        <Setter Property="Background" Value="{StaticResource BrushLightGray}"/>
+        <Setter Property="Background" Value="{StaticResource BrushSecondary}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-    </Style>
-    
-    <Style x:Key="ListItemKey" TargetType="{x:Type TextBlock}">
-        <Setter Property="Margin" Value="5,10"/>
-        <Setter Property="Padding" Value="5"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="White"/>
-    </Style>
-    
-    <Style x:Key="ListItemValue" TargetType="{x:Type TextBox}">
-        <Setter Property="Margin" Value="0,5"/>
-        <Setter Property="Padding" Value="10,0,0,0"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Stretch"/>
-        <Setter
-            Property="VerticalContentAlignment" Value="Center"/>
-    </Style>
-    <Style x:Key="Dropdown" TargetType="{x:Type ComboBox}">
-        <Setter Property="Margin" Value="0,5"/>
-        <Setter Property="Padding" Value="10,0,0,0"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Background" Value="White"/>
-    </Style>
-
-    <Style x:Key="DatePicker" TargetType="{x:Type DatePicker}">
-        <Setter Property="Margin" Value="0,5"/>
-        <Setter Property="Padding" Value="10,0,0,0"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-    </Style>
-
-    <Style x:Key="HeaderStringStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontWeight" Value="DemiBold"/>
     </Style>
 
     <Style TargetType="{x:Type GridViewColumnHeader}">
-        <Setter Property="Background" Value="{StaticResource BrushOrange}"/>
+        <Setter Property="Background" Value="{StaticResource BrushAccent}"/>
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BrushOrange}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushAccent}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -208,27 +201,10 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type ListViewItem}">
-        <Setter Property="Background" Value="{StaticResource BrushLightGray}"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Margin" Value="5,2"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                        <GridViewRowPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="{TemplateBinding Margin}" Content="{TemplateBinding Content}"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="{StaticResource BrushHover}"/>
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="{StaticResource BrushOrange}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <Style x:Key="HeaderStringStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
     </Style>
 
     <DataTemplate x:Key="HeaderTemplateNoSort">
@@ -250,5 +226,59 @@
             <TextBlock Text="{Binding }" Style="{StaticResource HeaderStringStyle}" Margin="30,3,0,3"/>
         </DockPanel>
     </DataTemplate>
+
+    <Style TargetType="{x:Type ListViewItem}">
+        <Setter Property="Background" Value="{StaticResource BrushSecondary}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Margin" Value="5,2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <GridViewRowPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="{TemplateBinding Margin}" Content="{TemplateBinding Content}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{StaticResource BrushHover}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{StaticResource BrushAccent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ListItemKey" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="5,10"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="ListItemValue" TargetType="{x:Type TextBox}">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter
+            Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="Dropdown" TargetType="{x:Type ComboBox}">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Background" Value="White"/>
+    </Style>
+
+    <Style x:Key="DatePicker" TargetType="{x:Type DatePicker}">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
 
 </ResourceDictionary>

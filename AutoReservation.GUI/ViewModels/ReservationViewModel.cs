@@ -1,4 +1,5 @@
 ﻿using AutoReservation.Common.DataTransferObjects;
+using AutoReservation.GUI.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,8 +89,15 @@ namespace AutoReservation.GUI.ViewModels
             List<ReservationDto> list;
             try
             {
-                list = target.Reservationen.FindAll(o => o.Bis > DateTime.Now).OrderBy(o => o.Von).ThenBy(o => o.Bis).ToList();
-                return list;
+                if (IsFiltered)
+                {
+                    list = target.Reservationen.FindAll(o => o.Von <= DateTime.Now && o.Bis >= DateTime.Now);
+                }
+                else
+                {
+                    list = target.Reservationen;
+                }
+                return list.OrderBy(o => o.Von).ThenBy(o => o.Bis).ToList();
             }
             catch (FaultException e)
             {
@@ -110,6 +118,27 @@ namespace AutoReservation.GUI.ViewModels
                     MessageBoxImage.Warning);
             }
             return new List<ReservationDto>();
+        }
+
+        private bool _isFiltered;
+        public bool IsFiltered
+        {
+            get { return _isFiltered; }
+            set
+            {
+                _isFiltered = value;
+                OnPropertyChanged(nameof(IsFiltered));
+                UpdateList();
+            }
+        }
+
+        public bool CanFilter()
+        {
+            if(List != null && List.Count > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
